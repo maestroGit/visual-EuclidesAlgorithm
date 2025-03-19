@@ -8,6 +8,8 @@ body {
   padding: 0;
   overflow: hidden;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   height: 100%;
   width: 100%;
@@ -59,7 +61,7 @@ h1 {
   /* Apila elementos verticalmente */
   justify-content: center;
   /* Centra el contenido horizontalmente */
-  width: 70%;
+  width: 100%;
   /* Asegura que el div ocupe todo el ancho */
   min-height: 200px;
   /* Establece una altura mínima uniforme */
@@ -206,6 +208,6 @@ button:hover {
   }
 
   .footer {
-    margin: 20px;
+    margin: 10px;
   }
 }
