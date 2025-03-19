@@ -1,0 +1,211 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 5px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-family: 'Cinzel', serif; /* Fuente con estilo clásico, asegúrate de incluirla */
+  font-size: 26px; /* Tamaño proporcional al título */
+  text-align: center; /* Centra el texto */
+  margin: 0px auto; /* Espaciado equilibrado */
+  color: #2f2f2f; /* Color oscuro pero suave */
+  padding: 10px; /* Espaciado interno */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* Centra los elementos horizontalmente */
+  justify-content: center;
+  /* Centra los elementos verticalmente */
+  padding: 0px; /* Orden: top, right, bottom, left */
+  /* 5px arriba y abajo, 0 a izquierda y derecha */
+  background-color: #fefefef7;
+  /* Color de fondo */
+  border-radius: 1px;
+  /* Bordes redondeados */
+  margin: 0px auto;
+  /* Centra el contenedor horizontalmente */
+  width: 100%;
+  /* Ancho del contenedor */
+  text-align: left;
+  /* Alinear el texto a la izquierda */
+}
+
+#myCanvas {
+  margin: 0;
+  /* Quitar márgenes alrededor del canvas */
+  padding: 0;
+  /* Quitar padding dentro del canvas */
+  background-color: #fefefe
+    /* Color de fondo del canvas */
+}
+
+.factors {
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  /* Apila elementos verticalmente */
+  justify-content: center;
+  /* Centra el contenido horizontalmente */
+  width: 70%;
+  /* Asegura que el div ocupe todo el ancho */
+  min-height: 200px;
+  /* Establece una altura mínima uniforme */
+  background-color: #fefefe;
+  /* Color de fondo */
+  padding: 0 0 5px 0; /* Orden: top, right, bottom, left */
+}
+
+.footer {
+  padding: 5px;
+  display: flex;
+  /* Para usar flexbox */
+  justify-content: center;
+  /* Centra el contenido horizontalmente */
+}
+
+.description {
+  font-family: Arial, sans-serif;
+  /* Tipo de letra estándar */
+  font-size: 14px;
+  /* Tamaño de fuente estándar */
+  font-weight: bold;
+  /* Texto en negrita */
+  text-align: center;
+  /* Centra el contenido del texto */
+  background-color: #fcfcfc;
+  /* Color de fondo para el cuadro de texto */
+  padding: 5px;
+  /* Espacio alrededor del texto */
+  border: 1px solid #ccc;
+  /* Borde del cuadro de texto */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  /* Sombra para el cuadro de texto */
+  max-width: 95vw;
+  /* Ancho máximo del cuadro de texto */
+  margin: 0px;
+  /* Margen alrededor del cuadro de texto */
+  border-radius: 10px;
+  /* Bordes redondeados */
+  word-wrap: break-word;
+  /* Asegura que el texto no desborde */
+}
+
+input {
+  width: 80px;
+  top: 10px;
+  left: 10px;
+  margin: 5px;
+}
+
+#inputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  width: 55px;
+  height: 20px;
+  padding: 2px;
+  margin: 2px 0;
+  font-size: 15px;
+  background-color: #fd962f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #d36c40;
+}
+
+/* Estilos para el modal */
+.modal {
+  display: none;
+  /* Oculto por defecto */
+  position: fixed;
+  /* Fijo en la pantalla */
+  z-index: 1;
+  /* Sitúa el modal delante de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Ancho completo */
+  height: 100%;
+  /* Alto completo */
+  overflow: auto;
+  /* Permite el desplazamiento si es necesario */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Fondo negro con opacidad */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  /* Centra el modal */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  /* Ancho del modal */
+  max-width: 600px;
+  /* Ancho máximo del modal */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: modalopen 0.5s;
+  /* Animación de apertura del modal */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Animación para la apertura del modal */
+@keyframes modalopen {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Para tablets y dispositivos móviles */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    /* Cambia a columna */
+  }
+
+  .footer {
+    margin: 20px;
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Visual Euclides Algorithm - GCD</title>
+  </head>
+  <body>
+    <h1 id="title">👀 Visual Euclides Algorithm 📏</h1>
+    <div class="container">
+      <p class="description">
+        The Euclidean algorithm is an efficient method for finding the greatest
+        common divisor (GCD) of two integers.
+      </p>
+    </div>
+    <div class="container">
+      <div id="inputs">
+        <input type="number" id="input1" placeholder="Dividend" />
+        <input type="number" id="input2" placeholder="Divisor" />
+        <button id="validar">G.C.D</button>
+      </div>
+    </div>
+    <div class="container">
+      <canvas id="myCanvas"></canvas>
+    </div>
+    <div class="container">
+      <div id="factors" class="factors"></div>
+    </div>
+    <div class="footer">
+      <p class="description">
+        The (GCD) is calculated by decomposing the numbers into their prime
+        factors and taking the common factors raised to the lowest power.<br>
+        The product of these will be the GCD.
+      </p>
+    </div>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modalMessage"></p>
+      </div>
+    </div>
+  </body>
+  <script src="app.js"></script>
+</html>
