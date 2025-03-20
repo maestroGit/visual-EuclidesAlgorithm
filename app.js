@@ -1,25 +1,33 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
+let heightBar = 30; // Altura de las barras en el canvas
+let valor1 = null;
+let valor2 = null;
 
 const ajustarTamanoCanvas = (factorAncho = 1, factorAlto = 1) => {
   const canvas = document.getElementById("myCanvas");
   canvas.width = window.innerWidth * factorAncho;
   canvas.height = window.innerHeight * factorAlto;
-  const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas
+  if (valor1 !== null && valor2 !== null) { // Solo redibuja si los valores están definidos
+    const dynamicHeight = Math.min(window.innerHeight * 0.05, 50);
+    createBarProportional(valor1, valor2, dynamicHeight); // Redibujar las barras
+  }
 };
 
 // Detecta si el viewport es menor a 768px (como la media query)
 const aplicarParaDispositivosMoviles = () => {
   if (window.innerWidth <= 768) {
+    heightBar = 15; // Cambia la altura de las barras
     ajustarTamanoCanvas(1, 1 / 5); // Llama con parámetros específicos
   } else {
+    heightBar = 30; // Altura normal de las barras
     ajustarTamanoCanvas(1, 0.3); // Valores normales para pantallas grandes
   }
 };
 
 // Función para crear barras proporcionales en el canvas
-const createBarProportional = (valor1, valor2, factor) => {
+const createBarProportional = (valor1, valor2, heightBar) => {
   // Determinar la longitud máxima de las barras en función del ancho del viewport
   const maxBarLength = window.innerWidth * 0.98; // 98% del ancho del viewport
   // Encontrar el valor máximo entre los dos valores para calcular la proporción
@@ -29,14 +37,11 @@ const createBarProportional = (valor1, valor2, factor) => {
   const barLength2 = (valor2 / maxValue) * maxBarLength;
   // Dibujar las barras en el canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
-  // // Calcula las alturas de las barras proporcionalmente
-  // const altura1 = valor1 * factor;
-  // const altura2 = valor2 * factor;
   ctx.fillStyle = "#90EE90";
-  ctx.fillRect(window.innerWidth * 0.01, 15, barLength1, factor); // Barra 1
+  ctx.fillRect(window.innerWidth * 0.01, 15, barLength1, heightBar); // Barra 1
   createsText(valor1, 14, 35); // Texto 1
   ctx.fillStyle = "#FF6961";
-  ctx.fillRect(window.innerWidth * 0.01, 65, barLength2, factor); // Barra 2
+  ctx.fillRect(window.innerWidth * 0.01, 65, barLength2, heightBar); // Barra 2
   createsText(valor2, 14, 85); // Texto 2
   // Calcular y dibujar la barra del MCD
   const mcdValue = mcdAlgorithm(valor1, valor2);
@@ -46,7 +51,7 @@ const createBarProportional = (valor1, valor2, factor) => {
   } // Si el MCD es 1, no se dibuja la barra
   const barLengthMCD = (mcdValue / maxValue) * maxBarLength;
   ctx.fillStyle = "orange";
-  ctx.fillRect(window.innerWidth * 0.01, 120, barLengthMCD, factor); // Barra MCD
+  ctx.fillRect(window.innerWidth * 0.01, 120, barLengthMCD, heightBar); // Barra MCD
   createsText(
     `Greatest Comun Divisor of ${valor1} and ${valor2}: ${mcdValue}`,
     14,
@@ -94,7 +99,7 @@ const validarInputs = (input1, input2) => {
 };
 
 const capturarValores = (input1, input2) => {
-  // Validar los inputs utilizando la función personalizada
+  // Validar los inputs utilizando la función personalizada validarInputs
   const mensajeError = validarInputs(input1, input2);
   if (mensajeError) {
     mostrarMensaje(mensajeError); // Mostrar el mensaje adecuado
@@ -130,7 +135,7 @@ const capturarValores = (input1, input2) => {
         container.style.display = ""; // Muestra el contenedor
       }
     });
-    createBarProportional(valor1, valor2, 30);
+    createBarProportional(valor1, valor2, heightBar);
   };
   // Verifica que ambos valores sean números, enteros y mayores que 0
   if (
@@ -175,10 +180,17 @@ containers.forEach((container, index) => {
 document.querySelector(".close").addEventListener("click", () => {
   document.getElementById("modal").style.display = "none";
 });
+
 document.getElementById("validar").addEventListener("click", () => {
   const input1 = document.getElementById("input1");
   const input2 = document.getElementById("input2");
   const valores = capturarValores(input1, input2);
+  if (valores) {
+    valor1 = valores.valor1;
+    valor2 = valores.valor2;
+    aplicarParaDispositivosMoviles();
+    createBarProportional(valor1, valor2); // Dibuja las barras
+  }
 });
 
 document.getElementById("validar").addEventListener("click", () => {
