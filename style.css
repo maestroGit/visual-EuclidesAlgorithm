@@ -210,4 +210,9 @@ button:hover {
   .footer {
     margin: 10px;
   }
+
+  #myCanvas{
+    width: 98%;
+    height: 50%;
+  }
 }

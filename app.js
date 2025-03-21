@@ -1,32 +1,46 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
+
+// Variables globales
 let heightBar = 30; // Altura de las barras en el canvas
 let valor1 = null;
 let valor2 = null;
 
-const ajustarTamanoCanvas = (factorAncho = 1, factorAlto = 1) => {
+// Ajusta la altura del canvas en función del viewport
+const fitHeightCanvas = (ajuste=1) => {
   const canvas = document.getElementById("myCanvas");
-  canvas.width = window.innerWidth * factorAncho;
-  canvas.height = window.innerHeight * factorAlto;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight*ajuste;
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas
-  if (valor1 !== null && valor2 !== null) { // Solo redibuja si los valores están definidos
-    const dynamicHeight = Math.min(window.innerHeight * 0.05, 50);
-    createBarProportional(valor1, valor2, dynamicHeight); // Redibujar las barras
+  if (valor1 !== null && valor2 !== null) {
+    // Solo redibuja si los valores están definidos
+    const dynamicHeight = Math.min(window.innerHeight * 0.05, heightBar); //  obtiene el valor mínimo entre: el 5% de la altura del viewport y 50px.
+    createBarProportional(valor1, valor2, dynamicHeight); // Redibujar las barras con la nueva altura
   }
 };
 
-// Detecta si el viewport es menor a 768px (como la media query)
+// Ajusta el canvas para dispositivos móviles
 const aplicarParaDispositivosMoviles = () => {
   if (window.innerWidth <= 768) {
-    heightBar = 15; // Cambia la altura de las barras
-    ajustarTamanoCanvas(1, 1 / 5); // Llama con parámetros específicos
+    heightBar = 40; // Cambia la altura de las barras
+    fitHeightCanvas(0.25); // Llama con parámetros específicos
   } else {
     heightBar = 30; // Altura normal de las barras
-    ajustarTamanoCanvas(1, 0.3); // Valores normales para pantallas grandes
+    fitHeightCanvas(0.25); // Valores normales para pantallas grandes
   }
 };
 
-// Función para crear barras proporcionales en el canvas
+// Función para dibujar una barra en el canvas
+const drawBar = (x, y, barLength, heightBar, color, text) => {
+  // Establece el color de la barra
+  ctx.fillStyle = color;
+  // Dibuja el rectángulo (la barra)
+  ctx.fillRect(x, y, barLength, heightBar);
+  // Dibuja el texto asociado a la barra
+  createsText(text, x, y+heightBar/2);
+};
+
+// Función para crear barras proporcionales a partir de dos valores
 const createBarProportional = (valor1, valor2, heightBar) => {
   // Determinar la longitud máxima de las barras en función del ancho del viewport
   const maxBarLength = window.innerWidth * 0.98; // 98% del ancho del viewport
@@ -35,42 +49,36 @@ const createBarProportional = (valor1, valor2, heightBar) => {
   // Calcular la longitud de cada barra en función de la proporción
   const barLength1 = (valor1 / maxValue) * maxBarLength;
   const barLength2 = (valor2 / maxValue) * maxBarLength;
-  // Dibujar las barras en el canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
-  ctx.fillStyle = "#90EE90";
-  ctx.fillRect(window.innerWidth * 0.01, 15, barLength1, heightBar); // Barra 1
-  createsText(valor1, 14, 35); // Texto 1
-  ctx.fillStyle = "#FF6961";
-  ctx.fillRect(window.innerWidth * 0.01, 65, barLength2, heightBar); // Barra 2
-  createsText(valor2, 14, 85); // Texto 2
+  // Limpiar el canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Dibujar las barras individuales
+  let marginX = window.innerWidth * 0.01; // 1% de margen horizontal del viewport
+  drawBar(marginX, 0, barLength1, heightBar, "#90EE90", valor1); // Barra 1
+  drawBar(marginX, heightBar+heightBar/2, barLength2, heightBar, "#FF6961", valor2); // Barra 2
   // Calcular y dibujar la barra del MCD
   const mcdValue = mcdAlgorithm(valor1, valor2);
   if (mcdValue === 1) {
     mostrarMensaje(`If there is no common prime factor, the GCD is 1. 
     They are coprime. They have no prime factors in common.`);
-  } // Si el MCD es 1, no se dibuja la barra
-  const barLengthMCD = (mcdValue / maxValue) * maxBarLength;
-  ctx.fillStyle = "orange";
-  ctx.fillRect(window.innerWidth * 0.01, 120, barLengthMCD, heightBar); // Barra MCD
-  createsText(
-    `Greatest Comun Divisor of ${valor1} and ${valor2}: ${mcdValue}`,
-    14,
-    140
-  ); // Texto MCD
+  } else {
+    const barLengthMCD = (mcdValue / maxValue) * maxBarLength;
+    drawBar(marginX, heightBar*2+heightBar, barLengthMCD, heightBar, "orange", `G.C.D. of ${valor1} and ${valor2}: ${mcdValue}`); // Barra MCD
+  }
 };
 
+
 // Calcular el tamaño de la fuente basado en el viewport
-const calculateFontSize = () => {
-  const fontSizeVW = window.innerWidth * 0.02; // 12% del ancho del viewport
-  const fontSizeVH = window.innerHeight * 0.02; // 2% de la altura del viewport
-  const font = Math.min(fontSizeVW, fontSizeVH); // Elige el menor valor entre vw y vh
+const fitFontSize = (adjust=1) => {
+  const fontSizeVW = window.innerWidth * adjust; // 2% del ancho del viewport
+  const fontSizeVH = window.innerHeight * adjust; // 2% de la altura del viewport
+  const font = Math.max(fontSizeVW, fontSizeVH); // Elige el mayor valor entre vw y vh
   return `bold ${font}px Verdana`; // Devuelve la fuente con el tamaño calculado
 };
 
 const createsText = (texto, x, y) => {
   ctx.fillStyle = "black"; // Color del texto
   //ctx.font = "bold 18px Verdana";
-  ctx.font = calculateFontSize(); // Establecer el tamaño de la fuente
+  ctx.font = fitFontSize(0.015); // Establecer el tamaño de la fuente
   ctx.textAlign = "start"; // El texto se alinea al inicio del punto x
   ctx.textBaseline = "middle"; // Línea base del texto
   ctx.fillText(texto, x, y);
@@ -89,10 +97,10 @@ const validarInputs = (input1, input2) => {
   const valor2 = parseFloat(input2.value);
   // Validar condiciones específicas para los valores
   if (isNaN(valor1) || valor1 <= 1) {
-    return "Input1 must be a number greater than 1.";
+    return "Dividend must be a number greater than 1.";
   }
   if (isNaN(valor2) || valor2 <= 0) {
-    return "Input2 must be a number greater than 0.";
+    return "Divisor must be a number greater than 0.";
   }
   // Si todo está correcto, retorna null
   return null;

@@ -1,5 +1,8 @@
 ## Euclid's Algorithm Visualization for GCD Calculation
 This project is a visualization of Euclid's Algorithm for calculating the Greatest Common Divisor (GCD).
+[Euclid's Algorithm](https://maestrogit.github.io/visual-EuclidesAlgorithm/)
+
+
 
 # How to Use
 Clone or download the repository.
